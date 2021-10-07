@@ -83,4 +83,13 @@ public class RacingRule {
         }
         return racingCarList;
     }
+
+    /**
+     * 전진 조건인지의 여부 확인
+     * @param count 횟수
+     * @return 전진 조건인지의 여부(true / false)
+     */
+    public static boolean isForward(int count) {
+        return count >= 4;
+    }
 }
