@@ -16,6 +16,8 @@ public class RacingRule {
 
     private static final String RACING_CAR_DELIMITER = ",";
 
+    private static final String RACING_ADD_POINT = "-";
+
     /**
      * 데이터의 null or empty string 여부 확인
      * @param data 데이터
@@ -91,5 +93,15 @@ public class RacingRule {
      */
     public static boolean isForward(int count) {
         return count >= 4;
+    }
+
+    /**
+     * 각 자동차별 현재 위치
+     * @param count 사용자가 입력한 횟수
+     * @param location 이전 위치
+     * @return 자동차의 현재 위치
+     */
+    public static String currentLocation(int count, String location) {
+        return RacingRule.isForward(count) ? (location + RACING_ADD_POINT) : location;
     }
 }

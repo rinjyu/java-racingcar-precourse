@@ -1,5 +1,7 @@
 package racinggame;
 
+import nextstep.utils.RacingRule;
+
 /**
  * @author Choi InJoo <rinjyu@naver.com>
  * @version 1.0
@@ -13,6 +15,7 @@ public class RacingCar {
 
     public RacingCar(String name) {
         this.name = name;
+        this.location = RacingRule.currentLocation(count, "");
     }
 
     public String getName() {
@@ -21,6 +24,7 @@ public class RacingCar {
 
     public void setCount(int count) {
         this.count = count;
+        this.location = RacingRule.currentLocation(count, location);
     }
 
     public String getLocation() {
