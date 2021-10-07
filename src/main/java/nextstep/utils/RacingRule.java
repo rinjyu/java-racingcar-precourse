@@ -4,6 +4,7 @@ import racinggame.RacingCar;
 import racinggame.RacingRuleException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -112,5 +113,31 @@ public class RacingRule {
      */
     public static String racingCarCurrentLocation(RacingCar racingCar) {
         return String.format("%s : %s", racingCar.getName(), racingCar.getLocation());
+    }
+
+    /**
+     * 자동차 경주 우승자 확인
+     * @param racingCarList 종료된 경주에서 각 자동차별 정보
+     * @return 자동차 경주 우승자
+     */
+    public static String racingWinner(List<RacingCar> racingCarList) {
+        StringBuilder winner = new StringBuilder();
+        int max = Collections.max(racingCarList).getLocation().length();
+        for (RacingCar racingCar : racingCarList) {
+            if (racingCar.getLocation().length() == max) {
+                winner.append(isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCar.getName()) : racingCar.getName());
+            }
+        }
+        return winner.toString();
+    }
+
+    /**
+     * 자동차 경주 결과 메시지
+     * @param racingCarList 자동차 경주 우승자 정보
+     * @return 최종 우승자 정보
+     */
+    public static String racingResultMessage(List<RacingCar> racingCarList) {
+        String winner = racingWinner(racingCarList);
+        return String.format("최종 우승자는 %s 입니다.", winner);
     }
 }

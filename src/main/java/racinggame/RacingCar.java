@@ -7,7 +7,7 @@ import nextstep.utils.RacingRule;
  * @version 1.0
  * @since 1.0
  */
-public class RacingCar {
+public class RacingCar implements Comparable<RacingCar> {
 
     private String name;
     private int count;
@@ -29,6 +29,16 @@ public class RacingCar {
 
     public String getLocation() {
         return location;
+    }
+
+    @Override
+    public int compareTo(RacingCar car) {
+        if (this.location.length() < car.getLocation().length()) {
+            return -1;
+        } else if (this.location.length() > car.getLocation().length()) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override

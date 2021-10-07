@@ -28,6 +28,7 @@ public class Application {
         racingCars();
         userNumber();
         duringTheRacing(racingCars, Integer.parseInt(count));
+        System.out.println(RacingRule.racingResultMessage(racingCars));
     }
 
     /**
