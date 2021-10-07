@@ -2,8 +2,10 @@ package racinggame;
 
 import nextstep.utils.Console;
 import nextstep.utils.RacingRule;
+import nextstep.utils.Randoms;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author Choi InJoo <rinjyu@naver.com>
@@ -25,6 +27,7 @@ public class Application {
     public static void racingGameView() {
         racingCars();
         userNumber();
+        duringTheRacing(racingCars, Integer.parseInt(count));
     }
 
     /**
@@ -54,5 +57,36 @@ public class Application {
             System.out.println(e.getMessage());
             userNumber();
         }
+    }
+
+    /**
+     * 자동차 경주 진행중
+     * @param racingCarList 경주 중인 자동차정보
+     * @param count 횟수
+     */
+    public static void duringTheRacing(List<RacingCar> racingCarList, int count) {
+        while (count > 0) {
+            racingCars = currentRacingResult(racingCarList);
+            count--;
+        }
+    }
+
+    /**
+     * 현재 자동차 경주 결과
+     * @param racingCarList 경주 중인 자동차정보
+     * @return 경주 중인 자동차정보
+     */
+    public static List<RacingCar> currentRacingResult(List<RacingCar> racingCarList) {
+        ListIterator<RacingCar> iterator = racingCarList.listIterator();
+        while (iterator.hasNext()) {
+            RacingCar racingCar = iterator.next();
+            racingCar.setCount(Randoms.pickNumberInRange(0, 9));
+            racingCarList.set(iterator.previousIndex(), racingCar);
+            System.out.println(RacingRule.racingCarCurrentLocation(racingCar));
+
+            if (!iterator.hasNext()) System.out.println();
+        }
+
+        return racingCarList;
     }
 }

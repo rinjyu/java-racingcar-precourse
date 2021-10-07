@@ -104,4 +104,13 @@ public class RacingRule {
     public static String currentLocation(int count, String location) {
         return RacingRule.isForward(count) ? (location + RACING_ADD_POINT) : location;
     }
+
+    /**
+     * 각 자동차별 현재 위치 정보
+     * @param racingCar 자동차
+     * @return 각 자동차별 현재 위치 정보(자동차명 : 현재 위치)
+     */
+    public static String racingCarCurrentLocation(RacingCar racingCar) {
+        return String.format("%s : %s", racingCar.getName(), racingCar.getLocation());
+    }
 }
