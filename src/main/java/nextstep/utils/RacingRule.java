@@ -1,7 +1,10 @@
 package nextstep.utils;
 
+import racinggame.RacingCar;
 import racinggame.RacingRuleException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -37,7 +40,7 @@ public class RacingRule {
      * @return 자동차명의 글자수가 1~5사이의 값인지의 여부(true / false)
      */
     public static boolean isEachRacingCarNameLength(String[] racingCars) {
-        for (String car: racingCars) {
+        for (String car : racingCars) {
             if (!(car.length() > 0 && car.length() < 6)) return false;
         }
         return true;
@@ -66,5 +69,18 @@ public class RacingRule {
             return;
         }
         throw new RacingRuleException("[ERROR] 숫자로 입력해주세요.");
+    }
+
+    /**
+     * 사용자가 입력한 자동차명을 List 형으로 변환
+     * @param racingCars 사용자가 입력한 자동차명
+     * @return List 형으로 변환한 자동차명
+     */
+    public static List<RacingCar> racingCarList(String[] racingCars) {
+        List<RacingCar> racingCarList = new ArrayList<>();
+        for (String car : racingCars) {
+            racingCarList.add(new RacingCar(car));
+        }
+        return racingCarList;
     }
 }
