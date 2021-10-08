@@ -15,7 +15,12 @@ public class RacingCar implements Comparable<RacingCar> {
 
     public RacingCar(String name) {
         this.name = name;
-        this.location = RacingRule.currentLocation(count, "");
+    }
+
+    public RacingCar(String name, int count, String location) {
+        this.name = name;
+        this.count = count;
+        this.location = RacingRule.currentLocation(count, location);
     }
 
     public String getName() {

@@ -103,6 +103,9 @@ public class RacingRule {
      * @return 자동차의 현재 위치
      */
     public static String currentLocation(int count, String location) {
+        if (!isDataExists(location)) {
+            location = "";
+        }
         return RacingRule.isForward(count) ? (location + RACING_ADD_POINT) : location;
     }
 
