@@ -39,7 +39,7 @@ public class Application {
         String userRacingCars = Console.readLine();
         try {
             RacingRule.isRacingCarsValidation(userRacingCars);
-            racingCars = RacingRule.racingCarList(userRacingCars.split(","));
+            racingCars = RacingRule.racingCarList(userRacingCars.split(RacingRule.RACING_CAR_DELIMITER));
         } catch (RacingRuleException e) {
             System.out.println(e.getMessage());
             racingCars();

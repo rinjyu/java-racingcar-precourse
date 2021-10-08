@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class RacingRule {
 
-    private static final String RACING_CAR_DELIMITER = ",";
+    public static final String RACING_CAR_DELIMITER = ",";
 
     private static final String RACING_ADD_POINT = "-";
 
