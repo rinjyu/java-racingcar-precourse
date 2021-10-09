@@ -119,15 +119,35 @@ public class RacingRule {
     }
 
     /**
+     * 이동거리에 대한 내림차순 정렬
+     * @param racingCarList 경주가 끝난 자동차정보
+     */
+    public static void racingCarsReversedOrder(List<RacingCar> racingCarList) {
+        racingCarList.sort(Collections.reverseOrder());
+    }
+
+    /**
+     * 자동차 경주 우승자의 이동거리
+     * @param sortedRacingCarList 이동거리에 대한 내림차순 정렬된 각 자동차별 위치
+     * @return 자동차 경주 우승자의 이동거리
+     */
+    public static int racingCarMaxDistance(List<RacingCar> sortedRacingCarList) {
+        return Collections.max(sortedRacingCarList).getLocation().length();
+    }
+
+    /**
      * 자동차 경주 우승자 확인
-     * @param racingCarList 종료된 경주에서 각 자동차별 정보
+     * @param sortedRacingCarList 이동거리에 대한 내림차순 정렬된 각 자동차별 위치
+     * @param maxDistance 자동차 경주 우승자의 이동거리
      * @return 자동차 경주 우승자
      */
-    public static String racingWinner(List<RacingCar> racingCarList) {
+    public static String racingWinner(List<RacingCar> sortedRacingCarList, int maxDistance) {
         StringBuilder winner = new StringBuilder();
-        int max = Collections.max(racingCarList).getLocation().length();
-        for (RacingCar racingCar : racingCarList) {
-            if (racingCar.getLocation().length() == max) {
+        for (RacingCar racingCar : sortedRacingCarList) {
+            if (racingCar.getLocation().length() < maxDistance) {
+                return winner.toString();
+            }
+            if (racingCar.getLocation().length() == maxDistance) {
                 winner.append(isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCar.getName()) : racingCar.getName());
             }
         }
@@ -140,7 +160,8 @@ public class RacingRule {
      * @return 최종 우승자 정보
      */
     public static String racingResultMessage(List<RacingCar> racingCarList) {
-        String winner = racingWinner(racingCarList);
+        racingCarsReversedOrder(racingCarList);
+        String winner = racingWinner(racingCarList, racingCarMaxDistance(racingCarList));
         return String.format("최종 우승자는 %s 입니다.", winner);
     }
 }
