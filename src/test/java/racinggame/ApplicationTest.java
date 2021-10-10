@@ -32,6 +32,30 @@ public class ApplicationTest extends NSTest {
         });
     }
 
+    @Test
+    void 이름에_대한_예외_처리_콤마_미포함() {
+        assertSimpleTest(() -> {
+            runNoLineFound("car");
+            verify(ERROR_MESSAGE);
+        });
+    }
+
+    @Test
+    void 횟수에_대한_예외_처리() {
+        assertSimpleTest(() -> {
+            runNoLineFound("car1,car2", "abc");
+            verify(ERROR_MESSAGE);
+        });
+    }
+
+    @Test
+    void 공동우승() {
+        assertRandomTest(() -> {
+            run("car1,car2,car3,car4,car5,car6", "1");
+            verify("car1 : -", "car2 : ", "car3 : ", "car4 : -", "car5 : -", "car6 : ", "최종 우승자는 car1,car4,car5 입니다.");
+        }, MOVING_FORWARD, STOP, STOP, MOVING_FORWARD, MOVING_FORWARD, STOP);
+    }
+
     @AfterEach
     void tearDown() {
         outputStandard();
