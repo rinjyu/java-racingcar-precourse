@@ -1,4 +1,4 @@
-package racinggame;
+package racinggame.common.exception;
 
 /**
  * @author Choi InJoo <rinjyu@naver.com>

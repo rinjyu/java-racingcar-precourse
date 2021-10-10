@@ -1,4 +1,4 @@
-package racinggame;
+package racinggame.common.enums;
 
 /**
  * @author Choi InJoo <rinjyu@naver.com>

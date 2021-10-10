@@ -3,6 +3,12 @@ package racinggame;
 import nextstep.utils.Console;
 import nextstep.utils.RacingRule;
 import nextstep.utils.Randoms;
+import racinggame.common.constant.RacingConstant;
+import racinggame.common.enums.Message;
+import racinggame.common.enums.MessageType;
+import racinggame.common.exception.RacingRuleException;
+import racinggame.common.validation.RacingValidation;
+import racinggame.domain.RacingCar;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -38,8 +44,8 @@ public class Application {
         Message.printMessage(MessageType.NORMAL.getType(), Message.ENTER_THE_RACING_CAR_NAME.getMessage());
         String userRacingCars = Console.readLine();
         try {
-            RacingRule.isRacingCarsValidation(userRacingCars);
-            racingCars = RacingRule.racingCarList(userRacingCars.split(RacingRule.RACING_CAR_DELIMITER));
+            RacingValidation.isRacingCarsValidation(userRacingCars);
+            racingCars = RacingRule.racingCarList(userRacingCars.split(RacingConstant.RACING_CAR_DELIMITER));
         } catch (RacingRuleException e) {
             Message.printMessage(MessageType.ERROR.getType(), e.getMessage());
             racingCars();
@@ -53,7 +59,7 @@ public class Application {
         Message.printMessage(MessageType.NORMAL.getType(), Message.ENTER_THE_NUMBER_OF_TIMES.getMessage());
         count = Console.readLine();
         try {
-            RacingRule.isCountValidation(count);
+            RacingValidation.isCountValidation(count);
         } catch (RacingRuleException e) {
             Message.printMessage(MessageType.ERROR.getType(), e.getMessage());
             userNumber();
