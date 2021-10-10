@@ -136,6 +136,21 @@ public class RacingRule {
     }
 
     /**
+     * 자동차 경주 우승자 조회
+     * @param winner 자동차 경주 우승자
+     * @param location 현재 자동차의 이동거리
+     * @param maxDistance 자동차 경주 우승자의 이동거리
+     * @param racingCarName 현재 자동차의 이름
+     * @return 자동차 경주 우승자
+     */
+    public static StringBuilder getRacingWinner(StringBuilder winner, String location, int maxDistance, String racingCarName) {
+        if (location.length() == maxDistance) {
+            winner.append(isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCarName) : racingCarName);
+        }
+        return winner;
+    }
+
+    /**
      * 자동차 경주 우승자 확인
      * @param sortedRacingCarList 이동거리에 대한 내림차순 정렬된 각 자동차별 위치
      * @param maxDistance 자동차 경주 우승자의 이동거리
@@ -147,9 +162,7 @@ public class RacingRule {
             if (racingCar.getLocation().length() < maxDistance) {
                 return winner.toString();
             }
-            if (racingCar.getLocation().length() == maxDistance) {
-                winner.append(isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCar.getName()) : racingCar.getName());
-            }
+            getRacingWinner(winner, racingCar.getLocation(), maxDistance, racingCar.getName());
         }
         return winner.toString();
     }

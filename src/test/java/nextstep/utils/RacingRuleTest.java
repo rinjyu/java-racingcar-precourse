@@ -154,6 +154,19 @@ class RacingRuleTest {
     }
 
     @ParameterizedTest
+    @DisplayName("자동차 경주 우승자 조회")
+    @MethodSource("getRacingCarWinner")
+    void 자동차_경주_우승자_조회(StringBuilder winner, String location, int maxDistance, String racingCarName) {
+        if (location.length() == maxDistance) {
+            winner.append(RacingRule.isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCarName) : racingCarName);
+        }
+        assertAll(
+                () -> assertNotNull(winner.toString()),
+                () -> assertEquals(winner.toString(), "Car1")
+        );
+    }
+
+    @ParameterizedTest
     @DisplayName("자동차 경주 우승자 확인")
     @MethodSource("generateCurrentRacingCars")
     void 자동차_경주_우승자_확인(List<RacingCar> racingCarList, int maxDistance) {
@@ -197,6 +210,13 @@ class RacingRuleTest {
 
         return Stream.of(
                 arguments(racingCarList, 4)
+        );
+    }
+
+    private static Stream<Arguments> getRacingCarWinner() {
+        return Stream.of(
+                arguments(new StringBuilder(), "----", 4, "Car1"),
+                arguments(new StringBuilder(), "---", 4, "Car2")
         );
     }
 
