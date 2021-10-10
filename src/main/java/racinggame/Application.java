@@ -28,20 +28,20 @@ public class Application {
         racingCars();
         userNumber();
         duringTheRacing(racingCars, Integer.parseInt(count));
-        System.out.println(RacingRule.racingResultMessage(racingCars));
+        Message.printMessage(MessageType.NORMAL.getType(), RacingRule.racingResultMessage(racingCars));
     }
 
     /**
      * 사용자가에게 경주할 자동차명 입력받기
      */
     public static void racingCars() {
-        System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
+        Message.printMessage(MessageType.NORMAL.getType(), Message.ENTER_THE_RACING_CAR_NAME.getMessage());
         String userRacingCars = Console.readLine();
         try {
             RacingRule.isRacingCarsValidation(userRacingCars);
             racingCars = RacingRule.racingCarList(userRacingCars.split(RacingRule.RACING_CAR_DELIMITER));
         } catch (RacingRuleException e) {
-            System.out.println(e.getMessage());
+            Message.printMessage(MessageType.ERROR.getType(), e.getMessage());
             racingCars();
         }
     }
@@ -50,12 +50,12 @@ public class Application {
      * 사용자에게 횟수 입력받기
      */
     public static void userNumber() {
-        System.out.println("시도할 회수는 몇회인가요?");
+        Message.printMessage(MessageType.NORMAL.getType(), Message.ENTER_THE_NUMBER_OF_TIMES.getMessage());
         count = Console.readLine();
         try {
             RacingRule.isCountValidation(count);
         } catch (RacingRuleException e) {
-            System.out.println(e.getMessage());
+            Message.printMessage(MessageType.ERROR.getType(), e.getMessage());
             userNumber();
         }
     }
@@ -83,9 +83,9 @@ public class Application {
             RacingCar racingCar = iterator.next();
             racingCar.setCount(Randoms.pickNumberInRange(0, 9));
             racingCarList.set(iterator.previousIndex(), racingCar);
-            System.out.println(RacingRule.racingCarCurrentLocation(racingCar));
+            Message.printMessage(MessageType.NORMAL.getType(), RacingRule.racingCarCurrentLocation(racingCar));
 
-            if (!iterator.hasNext()) System.out.println();
+            if (!iterator.hasNext()) Message.printMessage(MessageType.NORMAL.getType(), "");
         }
 
         return racingCarList;

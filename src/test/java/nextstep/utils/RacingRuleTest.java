@@ -3,6 +3,7 @@ package nextstep.utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
+import racinggame.Message;
 import racinggame.RacingCar;
 import racinggame.RacingRuleException;
 
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -21,16 +23,10 @@ class RacingRuleTest {
     private static final String RACING_ADD_POINT = "-";
 
     @ParameterizedTest
-    @DisplayName("데이터의 null or empty string 여부 확인 : 데이터가 존재하는 경우")
-    @ValueSource(strings = {"MyCar"})
-    void 데이터가_존재하는_경우(String data) {
-        assertFalse(data == null || data.trim().isEmpty(), "입력 데이터 있음");
-    }
-
-    @ParameterizedTest
-    @DisplayName("데이터의 null or empty string 여부 확인 : 데이터가 존재하지 않는 경우")
+    @DisplayName("데이터의 null or empty string 여부 확인")
     @NullAndEmptySource
-    void 데이터가_존재하지않는_경우(String data) {
+    @ValueSource(strings = {"MyCar"})
+    void 데이터의_null_or_empty_string_여부_확인(String data) {
         assertTrue(data == null || data.trim().isEmpty(), "입력 데이터 있음");
     }
 
@@ -38,14 +34,14 @@ class RacingRuleTest {
     @DisplayName("자동차명 내의 콤마(,) 포함 여부 확인")
     @ValueSource(strings = {"MyCar1", "MyCar2,MyCar3"})
     void 자동차명_내의_콤마_포함_여부_확인(String racingCars) {
-        assertTrue(racingCars.contains(RACING_CAR_DELIMITER), "자동차명 내의 콤마(,)가 포함되어야 함");
+        assertThat(racingCars).contains(RACING_CAR_DELIMITER);
     }
 
     @ParameterizedTest
     @DisplayName("자동차명의 글자수 확인")
     @ValueSource(strings = {"MyCar", "MyCar1234"})
     void 자동차명의_글자수_확인(String racingCars) {
-        assertTrue(racingCars.length() > 0 && racingCars.length() < 6, "자동차명의 글자수가 1~5사이여야 함");
+        assertThat(racingCars.length()).isBetween(1, 5);
     }
 
     @ParameterizedTest
@@ -61,7 +57,7 @@ class RacingRuleTest {
     void 자동차명_유효성_확인_유효하지_않은_값인_경우(String racingCars) {
         RacingRuleException thrown = assertThrows(RacingRuleException.class,
                 () -> RacingRule.isRacingCarsValidation(racingCars));
-        assertEquals(thrown.getMessage(), "[ERROR] 유효하지 않은 자동차명입니다.\n다시 입력해주세요.");
+        assertThat(thrown.getMessage()).isEqualTo(Message.ERROR_INVALID_RACING_CAR_NAME.getMessage());
     }
 
     @ParameterizedTest
@@ -77,7 +73,7 @@ class RacingRuleTest {
     void 횟수가_유효한_값인지의_여부_확인_유효하지_않은_값인_경우(String count) {
         RacingRuleException thrown = assertThrows(RacingRuleException.class,
                 () -> RacingRule.isCountValidation(count));
-        assertEquals(thrown.getMessage(), "[ERROR] 숫자로 입력해주세요.");
+        assertThat(thrown.getMessage()).isEqualTo(Message.ERROR_INVALID_NUMBER.getMessage());
     }
 
     @ParameterizedTest
@@ -95,7 +91,7 @@ class RacingRuleTest {
     @DisplayName("전진 조건인지의 여부 확인")
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
     void 전진_조건인지의_여부_확인(int count) {
-        assertTrue(count >= 4, "전진 조건 아님");
+        assertThat(count).isGreaterThanOrEqualTo(4);
     }
 
     @ParameterizedTest
@@ -106,7 +102,7 @@ class RacingRuleTest {
             location = "";
         }
         location = RacingRule.isForward(count) ? (location + RACING_ADD_POINT) : location;
-        assertEquals("-", location);
+        assertThat(location).isEqualTo("-");
     }
 
     @ParameterizedTest
@@ -117,7 +113,7 @@ class RacingRuleTest {
             location = "";
         }
         location = RacingRule.isForward(count) ? (location + RACING_ADD_POINT) : location;
-        assertEquals("----", location);
+        assertThat(location).isEqualTo("----");
     }
 
     @ParameterizedTest
@@ -128,7 +124,7 @@ class RacingRuleTest {
             location = "";
         }
         location = RacingRule.isForward(count) ? (location + RACING_ADD_POINT) : location;
-        assertEquals("---", location);
+        assertThat(location).isEqualTo("---");
     }
 
     @ParameterizedTest
@@ -150,7 +146,7 @@ class RacingRuleTest {
     @MethodSource("generateCurrentRacingCars")
     void 자동차_경주_우승자의_이동거리(List<RacingCar> racingCarList, int maxDistance) {
         racingCarList.sort(Collections.reverseOrder());
-        assertEquals(Collections.max(racingCarList).getLocation().length(), maxDistance);
+        assertThat(Collections.max(racingCarList).getLocation().length()).isEqualTo(maxDistance);
     }
 
     @ParameterizedTest
@@ -180,6 +176,7 @@ class RacingRuleTest {
                 winner.append(RacingRule.isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCar.getName()) : racingCar.getName());
             }
         }
+
         assertAll(
                 () -> assertNotNull(winner.toString()),
                 () -> assertEquals(winner.toString(), "Car1,Car3")
@@ -192,7 +189,7 @@ class RacingRuleTest {
     void 자동차_경주_결과_메시지(List<RacingCar> racingCarList) {
         racingCarList.sort(Collections.reverseOrder());
         String winner = RacingRule.racingWinner(racingCarList, RacingRule.racingCarMaxDistance(racingCarList));
-        assertEquals(String.format("최종 우승자는 %s 입니다.", winner), "최종 우승자는 Car1,Car3 입니다.");
+        assertThat(winner).isEqualTo("Car1,Car3");
     }
 
     private static Stream<Arguments> generateRacingCars() {

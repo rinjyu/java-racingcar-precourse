@@ -1,5 +1,6 @@
 package nextstep.utils;
 
+import racinggame.Message;
 import racinggame.RacingCar;
 import racinggame.RacingRuleException;
 
@@ -59,7 +60,7 @@ public class RacingRule {
                 isEachRacingCarNameLength(racingCars.split(RACING_CAR_DELIMITER))) {
             return;
         }
-        throw new RacingRuleException("[ERROR] 유효하지 않은 자동차명입니다.\n다시 입력해주세요.");
+        throw new RacingRuleException(Message.ERROR_INVALID_RACING_CAR_NAME.getMessage());
     }
 
     /**
@@ -71,7 +72,7 @@ public class RacingRule {
         if (Pattern.matches("^[0-9]*$", count) && Integer.parseInt(count) > 0) {
             return;
         }
-        throw new RacingRuleException("[ERROR] 숫자로 입력해주세요.");
+        throw new RacingRuleException(Message.ERROR_INVALID_NUMBER.getMessage());
     }
 
     /**
@@ -115,7 +116,7 @@ public class RacingRule {
      * @return 각 자동차별 현재 위치 정보(자동차명 : 현재 위치)
      */
     public static String racingCarCurrentLocation(RacingCar racingCar) {
-        return String.format("%s : %s", racingCar.getName(), racingCar.getLocation());
+        return String.format(Message.CURRENT_RACING_CAR_LOCATION.getMessage(), racingCar.getName(), racingCar.getLocation());
     }
 
     /**
@@ -141,13 +142,11 @@ public class RacingRule {
      * @param location 현재 자동차의 이동거리
      * @param maxDistance 자동차 경주 우승자의 이동거리
      * @param racingCarName 현재 자동차의 이름
-     * @return 자동차 경주 우승자
      */
-    public static StringBuilder getRacingWinner(StringBuilder winner, String location, int maxDistance, String racingCarName) {
+    public static void getRacingWinner(StringBuilder winner, String location, int maxDistance, String racingCarName) {
         if (location.length() == maxDistance) {
             winner.append(isDataExists(winner.toString()) ? (RACING_CAR_DELIMITER + racingCarName) : racingCarName);
         }
-        return winner;
     }
 
     /**
@@ -175,6 +174,6 @@ public class RacingRule {
     public static String racingResultMessage(List<RacingCar> racingCarList) {
         racingCarsReversedOrder(racingCarList);
         String winner = racingWinner(racingCarList, racingCarMaxDistance(racingCarList));
-        return String.format("최종 우승자는 %s 입니다.", winner);
+        return String.format(Message.THE_RACING_FINAL_WINNER.getMessage(), winner);
     }
 }
